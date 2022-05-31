@@ -178,4 +178,123 @@ describe("BagelShop", () => {
         //verify
         expect(result).toEqual(expected)
     })
+
+    it("calculates the cost of 2 onion bagels", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        const expected = 0.98
+        // execute
+        const result = bagelShop.getCostOfItem(onion)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+
+    it("calculates the cost of 12 Plain bagels", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(20)
+        const plain = { SKU: 'BGLP', quantity: 12 }
+        const expected = 3.99
+        // execute
+        const result = bagelShop.getCostOfItem(plain)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 16 Plain bagels", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(20)
+        const plain = { SKU: 'BGLP', quantity: 16 }
+        const expected = 5.55
+        // execute
+        const result = bagelShop.getCostOfItem(plain)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 3 coffees", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        const coffee = { SKU: 'COF', quantity: 3 }
+        const expected = 2.97
+        // execute
+        const result = bagelShop.getCostOfItem(coffee)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 2 onion bagels and 12 Plain bagels", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(20)
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 12 }
+        bagelShop.addToBasket(plain)
+        const expected = 4.97
+        // execute
+        const result = bagelShop.getTotalCost()
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 2 onion bagels, 12 Plain bagels, 6 everything bagels and 3 coffees", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(50)
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 12 }
+        bagelShop.addToBasket(plain)
+        const everything = { SKU: 'BGLE', quantity: 6 }
+        bagelShop.addToBasket(everything)
+        const coffee = { SKU: 'COF', quantity: 3 }
+        bagelShop.addToBasket(coffee)
+        const expected = 10.43
+        // execute
+        const result = bagelShop.getTotalCost()
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 2 onion bagels, 14 Plain bagels, 6 everything bagels and 3 coffees", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(50)
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 14 }
+        bagelShop.addToBasket(plain)
+        const everything = { SKU: 'BGLE', quantity: 6 }
+        bagelShop.addToBasket(everything)
+        const coffee = { SKU: 'COF', quantity: 3 }
+        bagelShop.addToBasket(coffee)
+        const expected = 10.95
+        // execute
+        const result = bagelShop.getTotalCost()
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("calculates the cost of 2 onion bagels, 16 Plain bagels, 6 everything bagels and 3 coffees", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        bagelShop.alterBasketCapacity(50)
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 16 }
+        bagelShop.addToBasket(plain)
+        const everything = { SKU: 'BGLE', quantity: 6 }
+        bagelShop.addToBasket(everything)
+        const coffee = { SKU: 'COF', quantity: 3 }
+        bagelShop.addToBasket(coffee)
+        const expected = 11.60
+        // execute
+        const result = bagelShop.getTotalCost()
+        //verify
+        expect(result).toEqual(expected)
+    })
 })

@@ -40,7 +40,7 @@ class BagelShop {
                 variant: null,
                 price: 0.99,
                 offer: {
-                    withBGLP: true,
+                    amount: undefined,
                     price: 1.25
                 }
             }
@@ -98,6 +98,53 @@ class BagelShop {
             sum += this.basket[i].quantity
         }
         return sum
+    }
+
+    getCostOfItem(itemToCheck) {
+        const findInInventory = this.inventory.find(item => item.SKU === itemToCheck.SKU)
+        let cost = 0
+
+        if (findInInventory.name === 'bagel') {
+            const quantityOfOffer = Math.floor(itemToCheck.quantity / findInInventory.offer.amount)
+            const offerCost = quantityOfOffer * findInInventory.offer.price
+            const remainingBagel = itemToCheck.quantity % findInInventory.offer.amount
+            const remainingBagelCost = remainingBagel * findInInventory.price
+            cost = offerCost + remainingBagelCost
+        } else if (findInInventory.name === 'coffee') {
+            cost = findInInventory.price * itemToCheck.quantity
+        }
+        return Number(cost.toFixed(2))
+    }
+
+    getTotalCost() {
+        let totalCost = 0
+
+        const bagels = this.basket.filter(item => item.name === 'bagel')
+        for (let i = 0; i < bagels.length; i++) {
+            const cost = this.getCostOfItem(bagels[i])
+            totalCost += cost
+        }
+
+        const findCoffee = this.basket.find(item => item.name === 'coffee')
+        if (findCoffee) {
+            const coffee = findCoffee.quantity
+            const findPlain = this.basket.find(item => item.SKU === 'BGLP')
+            const remainingPlain = findPlain.quantity % findPlain.offer.amount
+
+            let combinedOffer = coffee
+            if (remainingPlain < coffee) {
+                combinedOffer = remainingPlain
+            }
+            totalCost -= combinedOffer * findPlain.price
+            const combinedOfferCost = combinedOffer * findCoffee.offer.price
+            totalCost += combinedOfferCost
+
+            const remainingCoffee = findCoffee.quantity - combinedOffer
+            const remainingCoffeeCost = remainingCoffee * findCoffee.price
+            totalCost += remainingCoffeeCost
+        }
+
+        return Number(totalCost.toFixed(2))
     }
 
 }
