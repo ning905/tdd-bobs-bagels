@@ -1,78 +1,134 @@
 const BagelShop = require('../src/bagelShop.js')
 
 describe("BagelShop", () => {
-    it("adds 2 blueberry bagels to the basket", () => {
+    it("adds 2 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
-        const expected = [{ name: 'blueberry bagel', price: 2, quantity: 2 }]
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        const expected = [{
+            SKU: 'BGLO',
+            name: 'bagel',
+            variant: 'onion',
+            price: 0.49,
+            offer: {
+                amount: 6,
+                price: 2.49
+            },
+            quantity: 2
+        }]
         // execute
-        const result = bagelShop.addToBasket(blueberry)
+        const result = bagelShop.addToBasket(onion)
         //verify
         expect(result).toEqual(expected)
     })
 
-    it("cannot add 3 blueberry bagels and 3 salt bagels to the basket", () => {
+    it("cannot add 3 onion bagels and 3 plain bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
-        bagelShop.addToBasket(blueberry)
-        const salt = { name: 'salt bagel', price: 1, quantity: 3 }
-        const expected = "Basket is full. Cannot add to basket."
+        const onion = { SKU: 'BGLO', quantity: 3 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 3 }
+        const expected = "Too many! Basket cannot fit."
         // execute
-        const result = bagelShop.addToBasket(salt)
+        const result = bagelShop.addToBasket(plain)
         //verify
         expect(result).toEqual(expected)
     })
 
-    it("adds 1 more blueberry bagel after adding 3 blueberry bagels to the basket", () => {
+    it("adds 1 more onion bagel after adding 3 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
-        bagelShop.addToBasket(blueberry)
-        const moreBlueberry = { name: 'blueberry bagel', price: 2, quantity: 1 }
-        const expected = [{ name: 'blueberry bagel', price: 2, quantity: 4 }]
+        const onion = { SKU: 'BGLO', quantity: 3 }
+        bagelShop.addToBasket(onion)
+        const moreOnion = { SKU: 'BGLO', quantity: 1 }
+        const expected = [{
+            SKU: 'BGLO',
+            name: 'bagel',
+            variant: 'onion',
+            price: 0.49,
+            offer: {
+                amount: 6,
+                price: 2.49
+            },
+            quantity: 4
+        }]
         // execute
-        const result = bagelShop.addToBasket(moreBlueberry)
+        const result = bagelShop.addToBasket(moreOnion)
         //verify
         expect(result).toEqual(expected)
     })
 
-    it("cannot add 3 more blueberry bagels after adding 3 blueberry bagels to the basket", () => {
+    it("cannot add 3 more onion bagels after adding 3 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
-        bagelShop.addToBasket(blueberry)
-        const moreBlueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
-        const expected = "Basket is full. Cannot add to basket."
+        const onion = { SKU: 'BGLO', quantity: 3 }
+        bagelShop.addToBasket(onion)
+        const moreOnion = { SKU: 'BGLO', quantity: 3 }
+        const expected = "Too many! Basket cannot fit."
         // execute
-        const result = bagelShop.addToBasket(moreBlueberry)
+        const result = bagelShop.addToBasket(moreOnion)
         //verify
         expect(result).toEqual(expected)
     })
 
-    it("removes 1 blueberry bagel from the basket", () => {
+    it("removes 1 onion bagel from the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
-        bagelShop.addToBasket(blueberry)
-        const blueberryToRemove = { name: 'blueberry bagel', price: 2, quantity: 1 }
-        const expected = [{ name: 'blueberry bagel', price: 2, quantity: 1 }]
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const onionToRemove = { SKU: 'BGLO', quantity: 1 }
+        const expected = [{
+            SKU: 'BGLO',
+            name: 'bagel',
+            variant: 'onion',
+            price: 0.49,
+            offer: {
+                amount: 6,
+                price: 2.49
+            },
+            quantity: 1
+        }]
         // execute
-        const result = bagelShop.removeFromBasket(blueberryToRemove)
+        const result = bagelShop.removeFromBasket(onionToRemove)
         //verify
         expect(result).toEqual(expected)
     })
 
-    it("cannot remove 1 salt bagel from the basket", () => {
+    it("removes all onion bagel from the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
-        bagelShop.addToBasket(blueberry)
-        const salt = { name: 'salt bagel', price: 1, quantity: 1 }
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const onionToRemove = { SKU: 'BGLO', quantity: 2 }
+        const expected = []
+        // execute
+        const result = bagelShop.removeFromBasket(onionToRemove)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("cannot remove 3 onion bagel when there are only 2 onion bagels in the basket", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const onionToRemove = { SKU: 'BGLO', quantity: 3 }
+        const expected = "Cannot remove more than 2!"
+        // execute
+        const result = bagelShop.removeFromBasket(onionToRemove)
+        //verify
+        expect(result).toEqual(expected)
+    })
+
+    it("cannot remove 1 plain bagel from the basket", () => {
+        // set up
+        const bagelShop = new BagelShop()
+        const onion = { SKU: 'BGLO', quantity: 2 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 1 }
         const expected = "Item not found in the basket"
         // execute
-        const result = bagelShop.removeFromBasket(salt)
+        const result = bagelShop.removeFromBasket(plain)
         //verify
         expect(result).toEqual(expected)
     })
@@ -97,25 +153,25 @@ describe("BagelShop", () => {
         expect(result).toEqual(3)
     })
 
-    it("checks the price of a blueberry bagel", () => {
+    it("checks the price of a onion bagel", () => {
         // set up
         const bagelShop = new BagelShop()
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
-        const expected = 2
+        const onion = { SKU: 'BGLO' }
+        const expected = 0.49
         // execute
-        const result = bagelShop.checkItemPrice(blueberry)
+        const result = bagelShop.checkItemPrice(onion)
         // verify
         expect(result).toEqual(expected)
     })
 
-    it("calculates the sum of 3 blueberry bagels and 3 salt bagels", () => {
+    it("calculates the sum of 3 onion bagels and 3 plain bagels", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(8)
-        const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
-        bagelShop.addToBasket(blueberry)
-        const salt = { name: 'salt bagel', price: 1, quantity: 3 }
-        bagelShop.addToBasket(salt)
+        const onion = { SKU: 'BGLO', quantity: 3 }
+        bagelShop.addToBasket(onion)
+        const plain = { SKU: 'BGLP', quantity: 3 }
+        bagelShop.addToBasket(plain)
         const expected = 6
         // execute
         const result = bagelShop.getSumOfItems()
