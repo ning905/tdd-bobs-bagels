@@ -5,7 +5,7 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
-        const expected = [{ name: 'blueberry bagel', price: 1, quantity: 2 }]
+        const expected = [{ name: 'blueberry bagel', price: 2, quantity: 2 }]
         // execute
         const result = bagelShop.addToBasket(blueberry)
         //verify
@@ -30,10 +30,10 @@ describe("BagelShop", () => {
         const bagelShop = new BagelShop()
         const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
         bagelShop.addToBasket(blueberry)
-        blueberry.quantity = 1
+        const moreBlueberry = { name: 'blueberry bagel', price: 2, quantity: 1 }
         const expected = [{ name: 'blueberry bagel', price: 2, quantity: 4 }]
         // execute
-        const result = bagelShop.addToBasket(blueberry)
+        const result = bagelShop.addToBasket(moreBlueberry)
         //verify
         expect(result).toEqual(expected)
     })
@@ -43,10 +43,10 @@ describe("BagelShop", () => {
         const bagelShop = new BagelShop()
         const blueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
         bagelShop.addToBasket(blueberry)
-        blueberry.quantity = 3
+        const moreBlueberry = { name: 'blueberry bagel', price: 2, quantity: 3 }
         const expected = "Basket is full. Cannot add to basket."
         // execute
-        const result = bagelShop.addToBasket(blueberry)
+        const result = bagelShop.addToBasket(moreBlueberry)
         //verify
         expect(result).toEqual(expected)
     })
@@ -56,10 +56,10 @@ describe("BagelShop", () => {
         const bagelShop = new BagelShop()
         const blueberry = { name: 'blueberry bagel', price: 2, quantity: 2 }
         bagelShop.addToBasket(blueberry)
-        blueberry.quantity = 1
-        const expected = [{ name: 'blueberry bagel', price: 1, quantity: 1 }]
+        const blueberryToRemove = { name: 'blueberry bagel', price: 2, quantity: 1 }
+        const expected = [{ name: 'blueberry bagel', price: 2, quantity: 1 }]
         // execute
-        const result = bagelShop.removeFromBasket(blueberry)
+        const result = bagelShop.removeFromBasket(blueberryToRemove)
         //verify
         expect(result).toEqual(expected)
     })
@@ -108,7 +108,7 @@ describe("BagelShop", () => {
         expect(result).toEqual(expected)
     })
 
-    it("calculates the total price of 3 blueberry bagels and 3 salt bagels", () => {
+    it("calculates the sum of 3 blueberry bagels and 3 salt bagels", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(8)
@@ -116,9 +116,9 @@ describe("BagelShop", () => {
         bagelShop.addToBasket(blueberry)
         const salt = { name: 'salt bagel', price: 1, quantity: 3 }
         bagelShop.addToBasket(salt)
-        const expected = 9
+        const expected = 6
         // execute
-        const result = bagelShop.getTotalPrice
+        const result = bagelShop.getSumOfItems()
         //verify
         expect(result).toEqual(expected)
     })

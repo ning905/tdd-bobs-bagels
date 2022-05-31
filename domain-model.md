@@ -28,6 +28,6 @@ class BagelShop
   - Input: item(@Object), properties: name(@String), price(@Number), quantity(@Number)
   - Output: price(@Number)
 
-- Method: getTotalPrice()
+- Method: getSumOfItems()
   - Input: empty
-  - Output: totalPrice(@Number)
+  - Output: sum(@Number)
