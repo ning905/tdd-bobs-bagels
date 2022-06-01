@@ -125,25 +125,21 @@ class BagelShop {
             totalCost += cost
         }
 
-        const findCoffee = this.basket.find(item => item.name === 'coffee')
-        if (findCoffee) {
-            const coffee = findCoffee.quantity
-            const findPlain = this.basket.find(item => item.SKU === 'BGLP')
-            const remainingPlain = findPlain.quantity % findPlain.offer.amount
+        const coffeeInBasket = this.basket.find(item => item.name === 'coffee')
+        if (coffeeInBasket) {
+            const coffeeCost = coffeeInBasket.quantity * coffeeInBasket.price
+            totalCost += coffeeCost
 
-            let combinedOffer = coffee
-            if (remainingPlain < coffee) {
-                combinedOffer = remainingPlain
+            const plainInBasket = this.basket.find(item => item.SKU === 'BGLP')
+            const singlePlains = plainInBasket.quantity % plainInBasket.offer.amount
+
+            let combinedOffer = coffeeInBasket.quantity
+            if (singlePlains < coffeeInBasket.quantity) {
+                combinedOffer = singlePlains
             }
-            totalCost -= combinedOffer * findPlain.price
-            const combinedOfferCost = combinedOffer * findCoffee.offer.price
-            totalCost += combinedOfferCost
-
-            const remainingCoffee = findCoffee.quantity - combinedOffer
-            const remainingCoffeeCost = remainingCoffee * findCoffee.price
-            totalCost += remainingCoffeeCost
+            const combinedOfferSave = combinedOffer * (coffeeInBasket.price + plainInBasket.price - coffeeInBasket.offer.price)
+            totalCost -= combinedOfferSave
         }
-
         return Number(totalCost.toFixed(2))
     }
 

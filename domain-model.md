@@ -2,7 +2,8 @@ class BagelShop
 - Properties
   - this.basket:[]
   - this.basketCapacity: 5(@Number)
-
+  - this.basketQuantity: 0(@Number)
+  - this.inventory: (item[]), item(@Object), properties: SKU(@String), name(@String), variant(@String), price(@Number), offer(@Object, properties: amount(@Number), price(@Number))
 
 
 - Method: addToBasket(item)
