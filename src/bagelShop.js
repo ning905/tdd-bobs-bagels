@@ -111,11 +111,21 @@ class BagelShop {
         }
 
         const coffeeInBasket = this.basket.find(item => item.name === 'Coffee')
-        const coffeeInOffer = this.offer.find(item => item.sku === 'COF')
         if (coffeeInBasket) {
             const coffeeCost = coffeeInBasket.quantity * Number(coffeeInBasket.price)
             totalCost += coffeeCost
 
+            const combinedOfferSave = this.getCombinedOffer().save
+            totalCost -= combinedOfferSave
+        }
+        return Number(totalCost.toFixed(2))
+    }
+
+    getCombinedOffer() {
+        const coffeeInBasket = this.basket.find(item => item.name === 'Coffee')
+        const coffeeInOffer = this.offer.find(item => item.sku === 'COF')
+
+        if (coffeeInBasket) {
             const plainInBasket = this.basket.find(item => item.sku === 'BGLP')
             const plainInOffer = this.offer.find(item => item.sku === 'BGLP')
             const singlePlains = plainInBasket.quantity % plainInOffer.amount
@@ -124,12 +134,67 @@ class BagelShop {
             if (singlePlains < coffeeInBasket.quantity) {
                 combinedOffer = singlePlains
             }
+
             const combinedOfferSave = combinedOffer * (Number(coffeeInBasket.price) + Number(plainInBasket.price) - coffeeInOffer.price)
-            totalCost -= combinedOfferSave
+            return { amount: combinedOffer, save: combinedOfferSave }
         }
-        return Number(totalCost.toFixed(2))
     }
 
+    getReceipt() {
+        const header = "    ~~~ Bob's Bagels ~~~ \n\n"
+        const date = (new Date()).toLocaleString() + '\n\n'
+        const divider = '---------------------------- \n\n'
+        const totalCost = this.getTotalCost()
+        const combinedOffer = this.getCombinedOffer().amount
+        const combinedOfferSave = this.getCombinedOffer().save.toFixed(2)
+        const combinedOfferPrice = this.offer.find(item => item.sku === 'COF').price
+
+        let receipt = header + date + divider
+        let savedInTotal = 0
+
+        for (let i = 0; i < this.basket.length; i++) {
+            const thisItem = this.basket[i]
+            if (combinedOffer > 0 && (thisItem.sku === 'BGLP' || thisItem.sku === 'COF')) {
+                thisItem.quantity -= combinedOffer
+            }
+            const thisCost = this.getCostOfItem(thisItem)
+
+            let savedOnThis = Number((thisItem.quantity * Number(thisItem.price) - thisCost).toFixed(2))
+            savedInTotal += savedOnThis
+            if (savedOnThis === 0) {
+                savedOnThis = ''
+            } else {
+                savedOnThis = `(-${savedOnThis})`
+            }
+
+            if (thisItem.quantity !== 0 && thisItem.sku !== 'COF') {
+                receipt += `${thisItem.variant} ${thisItem.name}     ${thisItem.quantity}    ${thisCost} \n                       ${savedOnThis} \n`
+            } else if (thisItem.quantity !== 0 && thisItem.sku === 'COF') {
+                receipt += `${thisItem.name}          ${thisItem.quantity}         ${thisCost} \n                       ${savedOnThis} \n`
+            }
+        }
+
+        if (combinedOffer > 0) {
+            receipt += `Coffee & Plain Bagel     ${combinedOffer}    ${combinedOffer * combinedOfferPrice} \n                       (-${combinedOfferSave}) \n`
+        }
+
+        receipt += divider + 'Total          ' + totalCost + `\n\nYou saved a total of £${savedInTotal} \non this shop\n` + '\nThank you\nfor your order!'
+        return receipt
+    }
 }
+
+const bagelShop = new BagelShop()
+bagelShop.alterBasketCapacity(50)
+const onion = { "sku": 'BGLO', "quantity": 2 }
+bagelShop.addToBasket(onion)
+const plain = { "sku": 'BGLP', "quantity": 16 }
+bagelShop.addToBasket(plain)
+const everything = { "sku": 'BGLE', "quantity": 6 }
+bagelShop.addToBasket(everything)
+const coffee = { "sku": 'COF', "quantity": 5 }
+bagelShop.addToBasket(coffee)
+const receipt = bagelShop.getReceipt()
+console.log('receipt', receipt)
+
 
 module.exports = BagelShop
