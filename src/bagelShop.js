@@ -183,18 +183,4 @@ class BagelShop {
     }
 }
 
-const bagelShop = new BagelShop()
-bagelShop.alterBasketCapacity(50)
-const onion = { "sku": 'BGLO', "quantity": 2 }
-bagelShop.addToBasket(onion)
-const plain = { "sku": 'BGLP', "quantity": 16 }
-bagelShop.addToBasket(plain)
-const everything = { "sku": 'BGLE', "quantity": 6 }
-bagelShop.addToBasket(everything)
-const coffee = { "sku": 'COF', "quantity": 5 }
-bagelShop.addToBasket(coffee)
-const receipt = bagelShop.getReceipt()
-console.log('receipt', receipt)
-
-
 module.exports = BagelShop
