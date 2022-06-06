@@ -4,17 +4,13 @@ describe("BagelShop", () => {
     it("adds 2 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         const expected = [{
-            SKU: 'BGLO',
-            name: 'bagel',
-            variant: 'onion',
-            price: 0.49,
-            offer: {
-                amount: 6,
-                price: 2.49
-            },
-            quantity: 2
+            "sku": "BGLO",
+            "price": "0.49",
+            "name": "Bagel",
+            "variant": "Onion",
+            "quantity": 2
         }]
         // execute
         const result = bagelShop.addToBasket(onion)
@@ -25,9 +21,9 @@ describe("BagelShop", () => {
     it("cannot add 3 onion bagels and 3 plain bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 3 }
+        const onion = { "sku": 'BGLO', "quantity": 3 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 3 }
+        const plain = { "sku": 'BGLP', "quantity": 3 }
         const expected = "Too many! Basket cannot fit."
         // execute
         const result = bagelShop.addToBasket(plain)
@@ -38,19 +34,15 @@ describe("BagelShop", () => {
     it("adds 1 more onion bagel after adding 3 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 3 }
+        const onion = { "sku": 'BGLO', "quantity": 3 }
         bagelShop.addToBasket(onion)
-        const moreOnion = { SKU: 'BGLO', quantity: 1 }
+        const moreOnion = { "sku": 'BGLO', "quantity": 1 }
         const expected = [{
-            SKU: 'BGLO',
-            name: 'bagel',
-            variant: 'onion',
-            price: 0.49,
-            offer: {
-                amount: 6,
-                price: 2.49
-            },
-            quantity: 4
+            "sku": "BGLO",
+            "price": "0.49",
+            "name": "Bagel",
+            "variant": "Onion",
+            "quantity": 4
         }]
         // execute
         const result = bagelShop.addToBasket(moreOnion)
@@ -61,9 +53,9 @@ describe("BagelShop", () => {
     it("cannot add 3 more onion bagels after adding 3 onion bagels to the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 3 }
+        const onion = { "sku": 'BGLO', "quantity": 3 }
         bagelShop.addToBasket(onion)
-        const moreOnion = { SKU: 'BGLO', quantity: 3 }
+        const moreOnion = { "sku": 'BGLO', "quantity": 3 }
         const expected = "Too many! Basket cannot fit."
         // execute
         const result = bagelShop.addToBasket(moreOnion)
@@ -74,19 +66,15 @@ describe("BagelShop", () => {
     it("removes 1 onion bagel from the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const onionToRemove = { SKU: 'BGLO', quantity: 1 }
+        const onionToRemove = { "sku": 'BGLO', "quantity": 1 }
         const expected = [{
-            SKU: 'BGLO',
-            name: 'bagel',
-            variant: 'onion',
-            price: 0.49,
-            offer: {
-                amount: 6,
-                price: 2.49
-            },
-            quantity: 1
+            "sku": "BGLO",
+            "price": "0.49",
+            "name": "Bagel",
+            "variant": "Onion",
+            "quantity": 1
         }]
         // execute
         const result = bagelShop.removeFromBasket(onionToRemove)
@@ -97,9 +85,9 @@ describe("BagelShop", () => {
     it("removes all onion bagel from the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const onionToRemove = { SKU: 'BGLO', quantity: 2 }
+        const onionToRemove = { "sku": 'BGLO', "quantity": 2 }
         const expected = []
         // execute
         const result = bagelShop.removeFromBasket(onionToRemove)
@@ -110,9 +98,9 @@ describe("BagelShop", () => {
     it("cannot remove 3 onion bagel when there are only 2 onion bagels in the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const onionToRemove = { SKU: 'BGLO', quantity: 3 }
+        const onionToRemove = { "sku": 'BGLO', "quantity": 3 }
         const expected = "Cannot remove more than 2!"
         // execute
         const result = bagelShop.removeFromBasket(onionToRemove)
@@ -123,9 +111,9 @@ describe("BagelShop", () => {
     it("cannot remove 1 plain bagel from the basket", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 1 }
+        const plain = { "sku": 'BGLP', "quantity": 1 }
         const expected = "Item not found in the basket"
         // execute
         const result = bagelShop.removeFromBasket(plain)
@@ -156,7 +144,7 @@ describe("BagelShop", () => {
     it("checks the price of a onion bagel", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO' }
+        const onion = { "sku": 'BGLO' }
         const expected = 0.49
         // execute
         const result = bagelShop.checkItemPrice(onion)
@@ -168,9 +156,9 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(8)
-        const onion = { SKU: 'BGLO', quantity: 3 }
+        const onion = { "sku": 'BGLO', "quantity": 3 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 3 }
+        const plain = { "sku": 'BGLP', "quantity": 3 }
         bagelShop.addToBasket(plain)
         const expected = 6
         // execute
@@ -182,7 +170,7 @@ describe("BagelShop", () => {
     it("calculates the cost of 2 onion bagels", () => {
         // set up
         const bagelShop = new BagelShop()
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         const expected = 0.98
         // execute
         const result = bagelShop.getCostOfItem(onion)
@@ -195,7 +183,7 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(20)
-        const plain = { SKU: 'BGLP', quantity: 12 }
+        const plain = { "sku": 'BGLP', "quantity": 12 }
         const expected = 3.99
         // execute
         const result = bagelShop.getCostOfItem(plain)
@@ -207,7 +195,7 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(20)
-        const plain = { SKU: 'BGLP', quantity: 16 }
+        const plain = { "sku": 'BGLP', "quantity": 16 }
         const expected = 5.55
         // execute
         const result = bagelShop.getCostOfItem(plain)
@@ -218,7 +206,7 @@ describe("BagelShop", () => {
     it("calculates the cost of 3 coffees", () => {
         // set up
         const bagelShop = new BagelShop()
-        const coffee = { SKU: 'COF', quantity: 3 }
+        const coffee = { "sku": 'COF', "quantity": 3 }
         const expected = 2.97
         // execute
         const result = bagelShop.getCostOfItem(coffee)
@@ -230,9 +218,9 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(20)
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 12 }
+        const plain = { "sku": 'BGLP', "quantity": 12 }
         bagelShop.addToBasket(plain)
         const expected = 4.97
         // execute
@@ -245,13 +233,13 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(50)
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 12 }
+        const plain = { "sku": 'BGLP', "quantity": 12 }
         bagelShop.addToBasket(plain)
-        const everything = { SKU: 'BGLE', quantity: 6 }
+        const everything = { "sku": 'BGLE', "quantity": 6 }
         bagelShop.addToBasket(everything)
-        const coffee = { SKU: 'COF', quantity: 3 }
+        const coffee = { "sku": 'COF', "quantity": 3 }
         bagelShop.addToBasket(coffee)
         const expected = 10.43
         // execute
@@ -264,13 +252,13 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(50)
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 14 }
+        const plain = { "sku": 'BGLP', "quantity": 14 }
         bagelShop.addToBasket(plain)
-        const everything = { SKU: 'BGLE', quantity: 6 }
+        const everything = { "sku": 'BGLE', "quantity": 6 }
         bagelShop.addToBasket(everything)
-        const coffee = { SKU: 'COF', quantity: 3 }
+        const coffee = { "sku": 'COF', "quantity": 3 }
         bagelShop.addToBasket(coffee)
         const expected = 10.95
         // execute
@@ -283,13 +271,13 @@ describe("BagelShop", () => {
         // set up
         const bagelShop = new BagelShop()
         bagelShop.alterBasketCapacity(50)
-        const onion = { SKU: 'BGLO', quantity: 2 }
+        const onion = { "sku": 'BGLO', "quantity": 2 }
         bagelShop.addToBasket(onion)
-        const plain = { SKU: 'BGLP', quantity: 16 }
+        const plain = { "sku": 'BGLP', "quantity": 16 }
         bagelShop.addToBasket(plain)
-        const everything = { SKU: 'BGLE', quantity: 6 }
+        const everything = { "sku": 'BGLE', "quantity": 6 }
         bagelShop.addToBasket(everything)
-        const coffee = { SKU: 'COF', quantity: 3 }
+        const coffee = { "sku": 'COF', "quantity": 3 }
         bagelShop.addToBasket(coffee)
         const expected = 11.60
         // execute

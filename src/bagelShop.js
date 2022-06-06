@@ -1,61 +1,45 @@
+const inventory = require('../inventory.json').inventory
+
 class BagelShop {
     constructor() {
         this.basket = []
         this.basketCapacity = 5
         this.basketQuantity = 0
-        this.inventory = [
+        this.inventory = inventory
+        this.offer = [
             {
-                SKU: 'BGLO',
-                name: 'bagel',
-                variant: 'onion',
-                price: 0.49,
-                offer: {
-                    amount: 6,
-                    price: 2.49
-                }
+                "sku": 'BGLO',
+                amount: 6,
+                price: 2.49
             },
             {
-                SKU: 'BGLP',
-                name: 'bagel',
-                variant: 'Plain',
-                price: 0.39,
-                offer: {
-                    amount: 12,
-                    price: 3.99
-                }
+                "sku": 'BGLP',
+                amount: 12,
+                price: 3.99
             },
             {
-                SKU: 'BGLE',
-                name: 'bagel',
-                variant: 'Everything',
-                price: 0.49,
-                offer: {
-                    amount: 6,
-                    price: 2.49
-                }
+                "sku": 'BGLE',
+                amount: 6,
+                price: 2.49
             },
             {
-                SKU: 'COF',
-                name: 'coffee',
-                variant: null,
-                price: 0.99,
-                offer: {
-                    amount: undefined,
-                    price: 1.25
-                }
+                "sku": 'COF',
+                amount: undefined,
+                price: 1.25
             }
         ]
     }
 
+
     addToBasket(itemToAdd) {
         if (this.basketQuantity + itemToAdd.quantity <= this.basketCapacity) {
-            const findSameItem = this.basket.find(item => item.SKU === itemToAdd.SKU)
+            const findSameItem = this.basket.find(item => item.sku === itemToAdd.sku)
             if (findSameItem) {
                 findSameItem.quantity += itemToAdd.quantity
                 this.basketQuantity += itemToAdd.quantity
                 return this.basket
             }
-            const findInInventory = this.inventory.find(item => item.SKU === itemToAdd.SKU)
+            const findInInventory = this.inventory.find(item => item.sku === itemToAdd.sku)
             findInInventory.quantity = itemToAdd.quantity
             this.basket.push(findInInventory)
             this.basketQuantity += findInInventory.quantity
@@ -65,7 +49,7 @@ class BagelShop {
     }
 
     removeFromBasket(itemToRemove) {
-        const findSameItem = this.basket.find(item => item.SKU === itemToRemove.SKU)
+        const findSameItem = this.basket.find(item => item.sku === itemToRemove.sku)
         if (findSameItem) {
             if (findSameItem.quantity > itemToRemove.quantity) {
                 findSameItem.quantity -= itemToRemove.quantity
@@ -88,8 +72,8 @@ class BagelShop {
     }
 
     checkItemPrice(itemToCheck) {
-        const findInInventory = this.inventory.find(item => item.SKU === itemToCheck.SKU)
-        return findInInventory.price
+        const findInInventory = this.inventory.find(item => item.sku === itemToCheck.sku)
+        return Number(findInInventory.price)
     }
 
     getSumOfItems() {
@@ -101,17 +85,18 @@ class BagelShop {
     }
 
     getCostOfItem(itemToCheck) {
-        const findInInventory = this.inventory.find(item => item.SKU === itemToCheck.SKU)
+        const findInInventory = this.inventory.find(item => item.sku === itemToCheck.sku)
+        const findInOffer = this.offer.find(offer => offer.sku === itemToCheck.sku)
         let cost = 0
 
-        if (findInInventory.name === 'bagel') {
-            const quantityOfOffer = Math.floor(itemToCheck.quantity / findInInventory.offer.amount)
-            const offerCost = quantityOfOffer * findInInventory.offer.price
-            const remainingBagel = itemToCheck.quantity % findInInventory.offer.amount
-            const remainingBagelCost = remainingBagel * findInInventory.price
+        if (findInInventory.name === 'Bagel') {
+            const quantityOfOffer = Math.floor(itemToCheck.quantity / findInOffer.amount)
+            const offerCost = quantityOfOffer * findInOffer.price
+            const remainingBagel = itemToCheck.quantity % findInOffer.amount
+            const remainingBagelCost = remainingBagel * Number(findInInventory.price)
             cost = offerCost + remainingBagelCost
-        } else if (findInInventory.name === 'coffee') {
-            cost = findInInventory.price * itemToCheck.quantity
+        } else if (findInInventory.name === 'Coffee') {
+            cost = Number(findInInventory.price) * itemToCheck.quantity
         }
         return Number(cost.toFixed(2))
     }
@@ -119,25 +104,27 @@ class BagelShop {
     getTotalCost() {
         let totalCost = 0
 
-        const bagels = this.basket.filter(item => item.name === 'bagel')
+        const bagels = this.basket.filter(item => item.name === 'Bagel')
         for (let i = 0; i < bagels.length; i++) {
             const cost = this.getCostOfItem(bagels[i])
             totalCost += cost
         }
 
-        const coffeeInBasket = this.basket.find(item => item.name === 'coffee')
+        const coffeeInBasket = this.basket.find(item => item.name === 'Coffee')
+        const coffeeInOffer = this.offer.find(item => item.sku === 'COF')
         if (coffeeInBasket) {
-            const coffeeCost = coffeeInBasket.quantity * coffeeInBasket.price
+            const coffeeCost = coffeeInBasket.quantity * Number(coffeeInBasket.price)
             totalCost += coffeeCost
 
-            const plainInBasket = this.basket.find(item => item.SKU === 'BGLP')
-            const singlePlains = plainInBasket.quantity % plainInBasket.offer.amount
+            const plainInBasket = this.basket.find(item => item.sku === 'BGLP')
+            const plainInOffer = this.offer.find(item => item.sku === 'BGLP')
+            const singlePlains = plainInBasket.quantity % plainInOffer.amount
 
             let combinedOffer = coffeeInBasket.quantity
             if (singlePlains < coffeeInBasket.quantity) {
                 combinedOffer = singlePlains
             }
-            const combinedOfferSave = combinedOffer * (coffeeInBasket.price + plainInBasket.price - coffeeInBasket.offer.price)
+            const combinedOfferSave = combinedOffer * (Number(coffeeInBasket.price) + Number(plainInBasket.price) - coffeeInOffer.price)
             totalCost -= combinedOfferSave
         }
         return Number(totalCost.toFixed(2))
